@@ -8,7 +8,4 @@ from aiogram.fsm.state import StatesGroup,State
 admin_router = Router()
 
 
-@admin_router.message(CommandStart())
-async def start(message:Message):
-    await message.answer("ishladi")
 
