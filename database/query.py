@@ -25,6 +25,27 @@ def save_user(chat_id,fullname,phone,lat,long,username=None):
             except:
 
                 return None
+            
+        
+
+def get_foods():
+    with conn as db:
+        with db.cursor() as dbc:
+
+            dbc.execute("select * from food")
+            foods = dbc.fetchall()
+
+    return foods
+
+
+def get_food(id):
+    with conn as db:
+        with db.cursor() as dbc:
+            dbc.execute("select * from food where id =%s",(id,))
+            foods = dbc.fetchone()
+    print(foods)
+    print("+++++++++++++++++++++++")
+    return foods
 
     
 
