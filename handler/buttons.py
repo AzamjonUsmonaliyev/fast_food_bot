@@ -34,6 +34,25 @@ main_button = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
+
+
+
+def puls_minus_button(food_id, quantity=1):
+
+    buttons = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="➖",callback_data=f"minus_{quantity}_{food_id}"),
+             InlineKeyboardButton(text=f"{quantity}",callback_data=f"quantity_{quantity}"),
+             InlineKeyboardButton(text="➕",callback_data=f"plus_{quantity}_{food_id}")],
+             [InlineKeyboardButton(text="↩️",callback_data="cancel_food"),
+                InlineKeyboardButton(text="⏩",callback_data=f"next_food_{quantity}_{food_id}")]
+
+            
+        ]
+    )
+    return buttons
+
+
 async def food_button():
 
     buttons = InlineKeyboardBuilder()

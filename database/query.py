@@ -43,9 +43,18 @@ def get_food(id):
         with db.cursor() as dbc:
             dbc.execute("select * from food where id =%s",(id,))
             foods = dbc.fetchone()
-    print(foods)
-    print("+++++++++++++++++++++++")
     return foods
+
+
+def save_order(food_id,user_id,quantity,price):
+
+    with conn as db:
+        with db.cursor() as dbc:
+
+            dbc.execute("""
+        Insert into orders (food_id,user_id,quantity,price,status) values(%s,%s,%s,%s,%s)
+    """,(food_id,user_id,quantity,price,"new"))
+            
 
     
 

@@ -6,8 +6,8 @@ from aiogram.fsm.state import StatesGroup,State
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton ,FSInputFile,InputMediaPhoto
 
 
-from database.query import is_register,save_user,get_foods,get_food
-from .buttons import register_kb,phone_kb,location_kb,main_button,food_button
+from database.query import is_register,save_user,get_foods,get_food,save_order
+from .buttons import register_kb,phone_kb,location_kb,main_button,food_button,puls_minus_button
 from .buttons import reg_text,menu_text
 from .filters import check_phone, check_location
 
@@ -77,7 +77,7 @@ async def get_loction(message:Message,state:FSMContext):
          
             )
             await state.clear()
-            await message.answer("Registratsiya muofaqqiyatli!!!")
+            await message.answer("Registratsiya muofaqqiyatli!!!",reply_markup=main_button)
             
     else:
 
@@ -122,10 +122,95 @@ Bu yerda siz eng sevimli taomlaringizni topishingiz mumkin.
 async def get_one_food(call:CallbackQuery):
     id = int(call.data.split("_")[1])
     food = get_food(id)
-    print(food)
     image = FSInputFile(food[2])
     media = InputMediaPhoto(media=image,caption=f"{food[1]}")
     await call.message.edit_media(media=media)
+    await call.message.edit_reply_markup(reply_markup=puls_minus_button(food[0],1))
+
+
+@user_router.callback_query(F.data.startswith("minus"))
+async def minus_button(call:CallbackQuery):
+    quantity = int(call.data.split("_")[1])
+    food_id = int(call.data.split("_")[2])
+    if quantity>1:
+        quantity-=1
+        await call.message.edit_reply_markup(reply_markup=puls_minus_button(food_id,quantity))
+
+    else:
+        await call.answer("Mahsulot 1 ta dan kam bo'lishi mumkin emas")
+
+
+
+@user_router.callback_query(F.data.startswith("plus"))
+async def plus_button(call:CallbackQuery):
+    quantity = int(call.data.split("_")[1])
+    food_id = int(call.data.split("_")[2])
+    if quantity < 10:
+        quantity+=1
+        await call.message.edit_reply_markup(reply_markup=puls_minus_button(food_id,quantity))
+
+    else:
+        await call.answer("Mahsulot 10 ta dan ko'p bo'lishi mumkin emas")
+
+
+@user_router.callback_query(F.data == "cancel_food")
+async def food_back(call: CallbackQuery):
+
+
+    await call.message.edit_media(media=InputMediaPhoto(media="https://media.istockphoto.com/id/1407832840/photo/foods-enhancing-the-risk-of-cancer-junk-food.jpg?s=612x612&w=0&k=20&c=IBXz9XVfsZS-MM-AOW1kGel3WtgIDZpewFpNO2hGTGE=",caption="""
+🍔 Xush kelibsiz, FastFood menyusiga! 😋  
+
+Bu yerda siz eng sevimli taomlaringizni topishingiz mumkin.
+
+🛒 Buyurtma berish uchun kerakli taomni tanlang va savatga qo‘shing!"""),
+                               )
+    await call.message.edit_reply_markup(reply_markup=await food_button())
+
+
+
+@user_router.callback_query(F.data.startswith("next_food"))
+async def admit_food(call:CallbackQuery):
+    food_id = int(call.data.split("_")[-1])
+    quantity = int(call.data.split("_")[-2])
+
+    food = get_food(food_id)
+    confirm_text = (
+    f"🍽 Taom: {food[1]}\n"
+    f"💵 Narxi: {food[3]:,} so'm\n"
+    f"📦 Soni: {quantity} ta\n\n"
+    f"💵 Umumiy: {int(food[3])*quantity} so'm\n"
+    f"Siz ushbu buyurtmani tasdiqlaysizmi?"
+)
+    
+    order_button = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Cancel",callback_data="cancel_food"),InlineKeyboardButton(text="Send",callback_data=f"Send_{food_id}_{quantity}_{food[3]}")]
+    ]
+)
+   
+    await call.message.edit_caption(caption=confirm_text)
+    await call.message.edit_reply_markup(reply_markup=order_button)
+
+
+@user_router.callback_query(F.data.startswith("Send"))
+async def order_save(call:CallbackQuery):
+    food_id = int(call.data.split("_")[1])
+    quantity = int(call.data.split("_")[2])
+    price = int(call.data.split("_")[-1])
+
+    user_id =int(is_register(call.from_user.id)[0])
+  
+    save_order(food_id,user_id,quantity,price)
+
+    await call.message.edit_reply_markup(reply_markup=None)
+
+    await call.message.answer("Success",reply_markup=main_button)
+
+
+  
+
+
+
 
 
 
