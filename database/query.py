@@ -70,6 +70,80 @@ def is_admin(chat_id):
 
     except:
         return None
-        
+    
+
+def is_new_foods():
+    try:
+
+        with conn as db:
+            with db.cursor() as dbc:
+
+                dbc.execute("""
+SELECT 
+    o.id AS order_id,
+    f.name AS food_name,
+    u.chat_id AS user_id,
+    o.quantity,
+    o.price,
+    (o.quantity * o.price) AS total_price,
+    o.status
+FROM orders o
+JOIN food f ON o.food_id = f.id
+JOIN users u ON o.user_id = u.id
+WHERE o.status = 'new';
+                
+""")
+                data = dbc.fetchall()
+                
+        return data
+
+    except:
+        return None
+
+
+
+def is_progress_foods():
+    try:
+
+        with conn as db:
+            with db.cursor() as dbc:
+
+                dbc.execute("""
+SELECT 
+    o.id AS order_id,
+    f.name AS food_name,
+    u.chat_id AS user_id,
+    o.quantity,
+    o.price,
+    (o.quantity * o.price) AS total_price,
+    o.status
+FROM orders o
+JOIN food f ON o.food_id = f.id
+JOIN users u ON o.user_id = u.id
+WHERE o.status = 'in_progress';
+                
+""")
+                data = dbc.fetchall()
+                
+        return data
+
+    except:
+        return None
+
+
+
+def update_order(order_id):
+    try:
+
+        with conn as db:
+            with db.cursor() as dbc:
+                dbc.execute("update orders set status = 'cancel' where id = %s",(order_id,))
+                
+        return True
+
+    except:
+        return None
+    
+                
 
 

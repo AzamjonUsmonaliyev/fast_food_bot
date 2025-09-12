@@ -33,6 +33,28 @@ order_button= ReplyKeyboardMarkup(
 
 )
 
+
+def new_order_food(order_id):
+
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="❌ Cancel",callback_data=f"new_cancel_{order_id}"),
+                InlineKeyboardButton(text="✅ In Progress",callback_data=f"new_send_{order_id}")]
+        ]
+    )
+
+def progress_order_food(order_id):
+
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="❌ Cancel",callback_data=f"new_cancel_{order_id}"),
+                InlineKeyboardButton(text="🏁 Finished",callback_data=f"progress_send_{order_id}")]
+        ]
+    )
+    
+
 admin_munu_text = """
 ✅ Siz muvaffaqiyatli Admin panelga kirdingiz!
 Bu bo‘lim orqali siz quyidagi amallarni bajarishingiz mumkin:
