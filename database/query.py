@@ -56,6 +56,20 @@ def save_order(food_id,user_id,quantity,price):
     """,(food_id,user_id,quantity,price,"new"))
             
 
-    
+def is_admin(chat_id):
+
+    try:
+
+        with conn as db:
+            with db.cursor() as dbc:
+
+                dbc.execute("select * from users where chat_id = %s",(chat_id,))
+                data = dbc.fetchone()
+                
+        return data
+
+    except:
+        return None
+        
 
 

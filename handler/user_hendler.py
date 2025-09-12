@@ -107,7 +107,6 @@ Agar savollaringiz bo‘lsa yoki buyurtma bilan bog‘liq muammo yuz bersa, biz 
 @user_router.message(F.text =="🍽 Menu")
 async def menu(message:Message):
 
-
     await message.answer_photo(photo="https://media.istockphoto.com/id/1407832840/photo/foods-enhancing-the-risk-of-cancer-junk-food.jpg?s=612x612&w=0&k=20&c=IBXz9XVfsZS-MM-AOW1kGel3WtgIDZpewFpNO2hGTGE=",
                                caption="""
 🍔 Xush kelibsiz, FastFood menyusiga! 😋  
@@ -115,8 +114,8 @@ async def menu(message:Message):
 Bu yerda siz eng sevimli taomlaringizni topishingiz mumkin.
 
 🛒 Buyurtma berish uchun kerakli taomni tanlang va savatga qo‘shing!""",reply_markup= await food_button())
+ 
     
-
 
 @user_router.callback_query(F.data.startswith("food"))
 async def get_one_food(call:CallbackQuery):

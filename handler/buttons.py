@@ -10,6 +10,7 @@ register_kb = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
+
 phone_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text = "📞 Phone",request_contact=True)]
@@ -17,6 +18,8 @@ phone_kb = ReplyKeyboardMarkup(
     resize_keyboard=True,
     one_time_keyboard=True
 )
+
+
 location_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text = "📍 Location",request_location=True)]
@@ -33,7 +36,6 @@ main_button = ReplyKeyboardMarkup(
     resize_keyboard=True,
     one_time_keyboard=True
 )
-
 
 
 
@@ -61,6 +63,8 @@ async def food_button():
         buttons.add(InlineKeyboardButton(text=i[1],callback_data=f"food_{i[0]}"))
     return buttons.as_markup()
 
+
+
 reg_text = """
     🍔 FastFood Botga xush kelibsiz! 🚀  
 
@@ -86,6 +90,8 @@ Endi ochlikni yengish vaqti! 🚀
 📞 Contact – biz bilan bog‘lanish  
 ⚙️ Settings – til va boshqa sozlamalar
 """
+
+
 
 
 
