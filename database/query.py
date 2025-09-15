@@ -144,6 +144,20 @@ def update_order(order_id):
     except:
         return None
     
+
+def add_food(data:dict):
+    try:
+        with conn as db:
+            with db.cursor() as dbc:
+                dbc.execute("insert into food (name,description,image,price,quantity) values(%s,%s,%s,%s,%s)",(data["name"],data["desc"],data["image"],data["price"],data["quantity"]))
+                
+        return True
+
+    except:
+        return None
+
+
+    
                 
 
 

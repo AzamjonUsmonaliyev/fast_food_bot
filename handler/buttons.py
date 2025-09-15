@@ -61,7 +61,7 @@ async def food_button():
 
     for i in get_foods():
         buttons.add(InlineKeyboardButton(text=i[1],callback_data=f"food_{i[0]}"))
-    return buttons.as_markup()
+    return buttons.adjust(1).as_markup()
 
 
 
