@@ -195,7 +195,7 @@ async def admit_food(call:CallbackQuery):
 async def order_save(call:CallbackQuery):
     food_id = int(call.data.split("_")[1])
     quantity = int(call.data.split("_")[2])
-    price = int(call.data.split("_")[-1])
+    price = int(float(call.data.split("_")[-1])
 
     user_id =int(is_register(call.from_user.id)[0])
   
