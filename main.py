@@ -10,12 +10,12 @@ os.makedirs("images",exist_ok=True)
 
 dp = Dispatcher()
 
-env  = Env()
-env.read_env()
+
 
 
 async def main():
-    TOKEN = env.str("TOKEN")
+   
+    TOKEN = os.getenv("TOKEN")
     bot = Bot(TOKEN)
     dp.include_router(admin_router)
     dp.include_router(user_router)
